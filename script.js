@@ -255,16 +255,16 @@ function loadWeatherWidget() {
 
   // 显示小部件
   window.SeniverseWeatherWidget('show', {
-      flavor: "bubble",
-      location: "WT029G15ETRJ", // 根据需要修改
-      geolocation: false,
-      language: "zh-Hans",
-      unit: "c",
-      theme: "auto",
-      token: token,
-      hover: "always",
-      container: containerId
-  });
+    flavor: "bubble",
+    location: "WT029G15ETRJ",
+    geolocation: false,
+    language: "zh-Hans",
+    unit: "c",
+    theme: "auto",
+    token: "bcbca550-e415-4533-ae02-cadbfa9d0ef7",
+    hover: "always",
+    container: "tp-weather-widget"
+  })
 }
 
 function refreshWeather(){

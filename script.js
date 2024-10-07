@@ -283,7 +283,7 @@ function refreshWeather(){
 });
 }
 var requestsUrl;
-async function fetchImageAsBlob(url, retries = 3, delay = 1000) {
+async function fetchImageAsBlob(url, retries = 2, delay = 1000) {
   for (let i = 0; i < retries; i++) {
       try {
         //requestsUrl = '.' + url;
@@ -316,32 +316,53 @@ async function fetchImageAsBlob(url, retries = 3, delay = 1000) {
   return null; // 如果所有重试均失败，返回 null
 }
 
-// 主函数使用示例
-async function fetchImages(imageUrls) {
-  const results = [];
-  for (const url of imageUrls) {
-      const blobUrl = await fetchImageAsBlob(url);
-      results.push({ url, blobUrl }); // 存储原始 URL 和 Blob URL
-  }
-  return results;
+async function fetchImages(bgimages) {
+  const totalImages = bgimages.length;
+  let loadedImages = 0;
+
+  const imageData = await Promise.all(bgimages.map(async (url) => {
+    const blobUrl = await fetchImageAsBlob(url);
+    loadedImages++;
+    
+    // 计算并输出加载进度
+    const progress = Math.round((loadedImages / totalImages) * 100);
+    console.log(`加载进度: ${progress}%`);
+    // $(loading).html = `加载进度: ${progress}%`
+  
+    document.getElementById('progress').textContent = `加载中..请耐心等待..${progress}%`;
+
+    return { url, blobUrl };
+  }));
+
+  return imageData;
 }
 
-
 fetchImages(bgimages).then(imageData => {
+  let loadedCount = 0;
+  const totalImages = imageData.length;
+
   imageData.forEach(({ url, blobUrl }) => {
-      if (blobUrl) {
-          imageUrls.push(blobUrl);
-      } else {
-          console.error(`获取 Blob URL 失败: ${url}`);
-      }
+    if (blobUrl) {
+      imageUrls.push(blobUrl);
+      loadedCount++;
+    } else {
+      console.error(`获取 Blob URL 失败: ${url}`);
+    }
   });
-  setInterval(swapBackground(),600000)
-  log("已加载完毕所有背景图")
-  if(imageUrls.length==0){
-    alert("加载失败！点击确认重新加载")
-    window.location.reload()
+
+  // 输出最终加载结果
+  console.log(`成功加载 ${loadedCount} 张图片，共 ${totalImages} 张`);
+
+  setInterval(swapBackground, 600000);
+  swapBackground();
+  log("已加载完毕所有背景图");
+  
+  if (imageUrls.length === 0) {
+    alert("加载失败！点击确认重新加载");
+    window.location.reload();
   }
-  $(loading).hide()
+  
+  $(loading).hide();
 });
 getYiyan()
 setInterval(getYiyan, pause_time)

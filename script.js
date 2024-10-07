@@ -2,7 +2,7 @@ var imagenumber = 1;
 var imageUrls = [];
 const time_box = document.querySelector('.countdown')
 const time_day = document.querySelector('#day')
-var bgimages = ['./imgs/a.jpg', './imgs/b.jpg', './imgs/c.jpg', './imgs/d.jpg', './imgs/e.jpg', './imgs/f.jpg', './imgs/g.jpg', './imgs/h.jpg', './imgs/i.jpg', './imgs/j.jpg', './imgs/k.jpg','./imgs/l.webp', './imgs/m.webp', './imgs/n.webp'];
+var bgimages = ['/imgs/a.jpg', '/imgs/b.jpg', '/imgs/c.jpg', '/imgs/d.jpg', '/imgs/e.jpg', '/imgs/f.jpg', '/imgs/g.jpg', '/imgs/h.jpg', '/imgs/i.jpg', '/imgs/j.jpg', '/imgs/k.jpg','/imgs/l.webp', '/imgs/m.webp', '/imgs/n.webp'];
 const containerId = "tp-weather-widget"; // 将这一行替换成实际的容器ID
 const token = "bcbca550-e415-4533-ae02-cadbfa9d0ef7"; // 将这一行替换成实际的token
 const animation_time = 600
@@ -282,11 +282,13 @@ function refreshWeather(){
     container: containerId
 });
 }
-
+var requestsUrl;
 async function fetchImageAsBlob(url, retries = 3, delay = 1000) {
   for (let i = 0; i < retries; i++) {
       try {
-          const response = await fetch(url, {
+        //requestsUrl = '.' + url;
+        requestsUrl = "https://ghproxy.reflect.us.kg/https://raw.githubusercontent.com/HurryBy/HurryBy.github.io/refs/heads/main/" + url;
+          const response = await fetch(requestsUrl, {
               method: 'GET',
               redirect: 'follow' // 允许重定向
           });

@@ -1,5 +1,6 @@
 var imagenumber = 1;
 var imageUrls = [];
+var LinkPrefix;
 const time_box = document.querySelector('.countdown')
 const time_day = document.querySelector('#day')
 var bgimages = ['/imgs/a.jpg', '/imgs/b.jpg', '/imgs/c.jpg', '/imgs/d.jpg', '/imgs/e.jpg', '/imgs/f.jpg', '/imgs/g.jpg', '/imgs/h.jpg', '/imgs/i.jpg', '/imgs/j.jpg', '/imgs/k.jpg','/imgs/l.webp', '/imgs/m.webp', '/imgs/n.webp'];
@@ -127,8 +128,6 @@ function getDate() {
   time_box.innerHTML = str;
   time_day.innerText = tow(diffDays);
 }
-
-
 // console.log(saying);
 // const getYiyan = () => {
 //   fetch('https://international.v1.hitokoto.cn/?c=d&c=i&encode=json&charset=utf-8')
@@ -180,6 +179,11 @@ function getYiyan(){
     isVisible()
   })
 }
+getYiyan()
+setInterval(getYiyan, pause_time)
+
+getDate()
+setInterval(getDate, 1000)
 
 
 function swapBackground() {
@@ -287,8 +291,9 @@ async function fetchImageAsBlob(url, retries = 2, delay = 1000) {
   for (let i = 0; i < retries; i++) {
       try {
         //requestsUrl = '.' + url;
-        requestsUrl = "https://ghproxy.reflect.us.kg/https://raw.githubusercontent.com/HurryBy/HurryBy.github.io/refs/heads/main/" + url;
-          const response = await fetch(requestsUrl, {
+        // requestsUrl = "https://ghproxy.reflect.us.kg/https://raw.githubusercontent.com/HurryBy/HurryBy.github.io/refs/heads/main/" + url;
+        requestsUrl = LinkPrefix + url;  
+        const response = await fetch(requestsUrl, {
               method: 'GET',
               redirect: 'follow' // 允许重定向
           });
@@ -325,7 +330,7 @@ async function fetchImages(bgimages) {
     loadedImages++;
     
     // 计算并输出加载进度
-    const progress = Math.round((loadedImages / totalImages) * 100);
+    const progress = Math.round((loadedImages / (totalImages + 2)) * 100);
     console.log(`加载进度: ${progress}%`);
     // $(loading).html = `加载进度: ${progress}%`
   
@@ -337,53 +342,137 @@ async function fetchImages(bgimages) {
   return imageData;
 }
 
-fetchImages(bgimages).then(imageData => {
-  let loadedCount = 0;
-  const totalImages = imageData.length;
+const totalstart = Date.now();
+  // 优选线
+  async function selectFastestURL(urls) {
+  // 超时时间设置为10秒
+  const TIMEOUT = 10000;
 
-  imageData.forEach(({ url, blobUrl }) => {
-    if (blobUrl) {
-      imageUrls.push(blobUrl);
-      loadedCount++;
-    } else {
-      console.error(`获取 Blob URL 失败: ${url}`);
-    }
-  });
-
-  // 输出最终加载结果
-  console.log(`成功加载 ${loadedCount} 张图片，共 ${totalImages} 张`);
-
-  setInterval(swapBackground, 600000);
-  swapBackground();
-  log("已加载完毕所有背景图");
-  
-  if (imageUrls.length === 0) {
-    alert("加载失败！点击确认重新加载");
-    window.location.reload();
+  // 创建一个测试单个URL的函数
+  function testURL(url) {
+    return new Promise((resolve, reject) => {
+      const start = Date.now();
+      
+      fetch(url+"/testfile.png", { method: 'HEAD' })
+        .then(() => {
+          const duration = Date.now() - start;
+          resolve({ url, duration });
+        })
+        .catch(() => reject({ url, duration: Infinity }));
+      // 设置超时
+      setTimeout(() => reject({ url, duration: Infinity }), TIMEOUT);
+    });
   }
-  
-  $(loading).hide();
-});
-getYiyan()
-setInterval(getYiyan, pause_time)
 
-getDate()
-setInterval(getDate, 1000)
+  // 并行测试所有URL
+  const results = await Promise.all(
+    urls.map(url => testURL(url).catch(error => error))
+  );
 
-loadWeatherWidget()
-setInterval(refreshWeather,1800000)
+  // 找出响应最快的URL
+  const fastestResult = results.reduce((fastest, current) => 
+    current.duration < fastest.duration ? current : fastest
+  );
 
-// preloadImages(bgimages)
-//   .then((images) => {
-//     bgimages.splice(0, bgimages.length, ...images);
-//     setInterval(swapBackground(),600000)
-//     log("已加载全部背景图")
-//     console.log("加载成功的背景图:",bgimages)
-//     if(bgimages.length==0){
-//       alert("背景图片加载失败，请重试!")
-//     }
-//     else $(loading).hide()
-//   })
-//   .catch(error => {
-//     console.error(error);
-//   });
+  console.log("所有测试结果:", results);
+  console.log("最快的URL:", fastestResult.url);
+  console.log("响应时间:", fastestResult.duration, "ms");
+  return fastestResult.url;
+}
+
+// 使用示例
+const urls = [
+  'https://ghproxy.reflect.us.kg/https://raw.githubusercontent.com/HurryBy/HurryBy.github.io/refs/heads/main',
+  'https://gh.sixyin.com/https://raw.githubusercontent.com/HurryBy/HurryBy.github.io/refs/heads/main',
+  'https://ghproxy.cc/https://raw.githubusercontent.com/HurryBy/HurryBy.github.io/refs/heads/main',
+  'https://github.moeyy.xyz/https://raw.githubusercontent.com/HurryBy/HurryBy.github.io/refs/heads/main',
+  'https://github.muou666.com/https://raw.githubusercontent.com/HurryBy/HurryBy.github.io/refs/heads/main',
+  'https://github.yeqingg.cn/https://raw.githubusercontent.com/HurryBy/HurryBy.github.io/refs/heads/main',
+  // 添加更多的URL...
+];
+
+selectFastestURL(urls)
+  .then(fastestURL => {
+    LinkPrefix = fastestURL;
+    fetchImages(bgimages).then(imageData => {
+      let loadedCount = 0;
+      const totalImages = imageData.length;
+    
+      imageData.forEach(({ url, blobUrl }) => {
+        if (blobUrl) {
+          imageUrls.push(blobUrl);
+          loadedCount++;
+        } else {
+          console.error(`获取 Blob URL 失败: ${url}`);
+        }
+      });
+    
+      // 输出最终加载结果
+      console.log(`成功加载 ${loadedCount} 张图片，共 ${totalImages} 张`);
+    
+      setInterval(swapBackground, 600000);
+      swapBackground();
+      log("已加载完毕所有背景图");
+      
+      if (imageUrls.length === 0) {
+        alert("加载失败！点击确认重新加载");
+        window.location.reload();
+      }
+      
+      async function loadFontWithRetry(fontName, url, maxRetries = 3) {
+        for (let attempt = 1; attempt <= maxRetries; attempt++) {
+            try {
+                const font = new FontFace(fontName, `url(${url})`);
+                const loadedFont = await font.load();
+                document.fonts.add(loadedFont);
+                console.log(`Font ${fontName} loaded successfully on attempt ${attempt}`);
+                return loadedFont;
+            } catch (error) {
+                if (attempt === maxRetries) {
+                    throw new Error(`Failed to load font after ${maxRetries} attempts: ${error.message}`);
+                }
+                console.warn(`Attempt ${attempt} failed. Retrying...`);
+                await new Promise(resolve => setTimeout(resolve, 1000)); // 等待1秒后重试
+            }
+        }
+    }
+    
+    async function loadFontWithRetryWrapper(fontName, url, maxRetries = 3) {
+        try {
+            await loadFontWithRetry(fontName, url, maxRetries);
+            console.log('Font loaded successfully');
+        } catch (error) {
+            console.error('Error in loadFontWithRetryWrapper:', error);
+            throw error; // 重新抛出错误，允许调用者处理
+        }
+    }
+    
+    // 使用示例
+    async function main() {
+        try {
+            await loadFontWithRetryWrapper('xi', LinkPrefix + '/font1.ttf');
+            console.log((Date.now() - totalstart) / 1000)
+            const progress = Math.round((bgimages.length + 1 / (totalImages + 2)) * 100);
+            document.getElementById('progress').textContent = `加载中..请耐心等待..${progress}%`;        
+            await loadFontWithRetryWrapper('zhong', LinkPrefix + '/font2.ttf');
+            console.log((Date.now() - totalstart) / 1000)
+            loadWeatherWidget()
+    setInterval(refreshWeather,1800000)
+    var totalnumber = imageUrls.length
+    var totalspeed = (Date.now() - totalstart) / 1000
+    totalspeed.toFixed(3)
+    document.getElementById('information').textContent = `背景图 ${totalnumber}张 | 加载时长 ${totalspeed}s`;
+    $(loading).hide();
+            // 在这里执行后续操作
+        } catch (error) {
+            console.error('An error occurred:', error);
+        }
+    }
+    
+    main();
+    });
+})
+  .catch(error => {
+    alert(`加载失败！点击确认重新加载 ${error}`);
+        window.location.reload();
+  });

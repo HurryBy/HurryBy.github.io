@@ -1,12 +1,4 @@
-@font-face {
-    font-family: "xi";
-    src: url(https://ghproxy.reflect.us.kg/https://raw.githubusercontent.com/HurryBy/HurryBy.github.io/refs/heads/main/font1.ttf);
-    }
-@font-face {
-    font-family: "zhong";
-    src: url(https://ghproxy.reflect.us.kg/https://raw.githubusercontent.com/HurryBy/HurryBy.github.io/refs/heads/main/font2.ttf);
-    }
-    
+
 .msg{
       font-size: 48px;
       margin-bottom: 50px;
@@ -275,6 +267,7 @@ footer a:hover {
   opacity: 0; /* 变为透明 */
 }
 
+    
 .content {
   z-index: 1; /* 使得内容在加载动画之下 */
   text-align: center;

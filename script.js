@@ -452,7 +452,7 @@ selectFastestURL(urls)
         try {
             await loadFontWithRetryWrapper('xi', LinkPrefix + '/font1.ttf');
             console.log((Date.now() - totalstart) / 1000)
-            const progress = Math.round((bgimages.length + 1 / (totalImages + 2)) * 100);
+            const progress = Math.round(((bgimages.length + 1) / (totalImages + 2)) * 100);
             document.getElementById('progress').textContent = `加载中..请耐心等待..${progress}%`;        
             await loadFontWithRetryWrapper('zhong', LinkPrefix + '/font2.ttf');
             console.log((Date.now() - totalstart) / 1000)

@@ -391,7 +391,6 @@ async function selectFastestURL(urls) {
 	const fastestResult = results.reduce((fastest, current) =>
 		current.duration < fastest.duration ? current : fastest
 	);
-
 	console.log("所有测试结果:", results);
 	console.log("最快的URL:", fastestResult.url);
 	console.log("响应时间:", fastestResult.duration, "ms");
@@ -405,7 +404,7 @@ const urls = [
 	'https://ghproxy.cc/https://raw.githubusercontent.com/HurryBy/HurryBy.github.io/refs/heads/main',
 	'https://github.moeyy.xyz/https://raw.githubusercontent.com/HurryBy/HurryBy.github.io/refs/heads/main',
 	'https://github.muou666.com/https://raw.githubusercontent.com/HurryBy/HurryBy.github.io/refs/heads/main',
-	'https://github.yeqingg.cn/https://raw.githubusercontent.com/HurryBy/HurryBy.github.io/refs/heads/main',
+	'https://github.yeqingg.cn/https://raw.githubusercontent.com/HurryBy/HurryBy.github.io/refs/heads/main',  //高速线路
   'https://gh.222322.xyz/https://raw.githubusercontent.com/HurryBy/HurryBy.github.io/refs/heads/main',
   'https://gh.pylas.xyz/https://raw.githubusercontent.com/HurryBy/HurryBy.github.io/refs/heads/main',
   'https://gh.catmak.name/https://raw.githubusercontent.com/HurryBy/HurryBy.github.io/refs/heads/main',
@@ -494,7 +493,14 @@ selectFastestURL(urls)
 					var totalnumber = imageUrls.length
           var totalspeed = (Date.now()-totalstart) / 1000
 					totalspeed.toFixed(3)
-					document.getElementById('information').textContent = `背景图 ${totalnumber}张 | 加载时长 ${totalspeed}s`;
+					var totalnumber1 = bgimages.length
+					var xianlu;
+					urls.forEach(function(a,b,c){
+						if(a == LinkPrefix){
+							xianlu = b;
+						}
+					})
+					document.getElementById('information').textContent = `已加载背景图 ${totalnumber}/${totalnumber1}张 | 加载时长 ${totalspeed}s | 线路${xianlu}`;
           $(loading).hide();
 					// 在这里执行后续操作
 				} catch (error) {

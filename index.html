@@ -5,54 +5,49 @@
   <meta charset='UTF-8'>
   <meta http-equiv='X-UA-Compatible' content='IE=edge'>
   <meta name='viewport' content='width=device-width, initial-scale=1.0'>
-  <meta http-equiv="pragma" content="no-cache">  
-  <meta http-equiv="cache-control" content="no-cache, no-store, must-revalidate">  
+  <meta http-equiv="pragma" content="no-cache">
+  <meta http-equiv="cache-control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="expires" content="0">
   <title>2025年高考倒计时</title>
   <meta name="description" content="总是在最初的青春挥霍着岁月的生命,总是在最后的时光忆起最初的懈怠,时光一去不返,生命耗费不再,愿你能够珍爱生命,珍惜时间!" />
   <link rel="stylesheet" href="./style.css">
 </head>
-
 <body>
-      <!-- 天气插件 -->
-       <div id="tp-weather-widget"></div>
-      <div class="loader-container">
-        <div class="bgi"><img src="" class="bgi1"></div>
-        <div class='container'>
-          <main>
-            <img src="" style="position: absolute; margin-top: 20px; width: 300px" class="schoollogo"></img>
-            <!-- 主体内容 -->
-            <br>
-            <div class="msg">距离2025年高考倒计时: <span id="day" style="font-family: zhong;"></span> 天</div>
-            <div class="countdown"></div>
-            <br><br><br>
-            
-            <br>
-            
-            <div class="words" id="saying">
-              <!-- <span id="saying-text" style="font-family: xi;"></span> -->
+  <div class="decorative-border">
+    <!-- 天气插件 -->
+    <div id="tp-weather-widget"></div>
+    <div class="loader-container">
+      <div class="bgi"><img src="" class="bgi1"></div>
+      <div class='container'>
+        <main>
+          <img src="" style="position: absolute; margin-left: 200px;margin-top: 20px; width: 300px" class="schoollogo">
+          <!-- 将倒计时和文字都放入 words div中 -->
+          <div class="words" id="saying">
+            <div class="countdown-container">
+              <div class="msg">距离2025年高考倒计时: <span id="day" style="font-family: zhong; font-size: calc(3vh + 6vw);"></span> 天</div>
+              <div class="countdown"></div>
             </div>
-            <button onclick="toggleFullScreen()" id="button1">全屏显示</button>
-            <div style="position: absolute;
-            bottom: 0;
-            left: 0;">
-      
-              <span > V20241012 | Developed By K2206YRF | Background Images From K2202ZW & K2206YRF | </span><span id="information"></span>
-            
-              </div>
-
-
-
-              <div class="loader-overlay" id="loading">
-                <div class="loader"></div>
-                <p id="progress">正在为您选择最优线路加载...请稍后...</p>
-            </div>
+            <div class="quote-container"></div>
+          </div>
+          <button onclick="toggleFullScreen()" id="button1">全屏显示</button>
+          <div style="position: absolute;
+          bottom: 0;
+          left: 0;
+          font-size: 10px;">
+            <span> V20250101 | Developed By K2206YRF | Background Images From K2202ZW & K2206YRF | </span><span
+              id="information"></span>
+          </div>
+          <div class="loader-overlay" id="loading">
+            <div class="loader"></div>
+            <p id="progress">正在为您选择最优线路加载...请稍后...</p>
+          </div>
+        </main>
+      </div>
     </div>
-    </main>
-  </div>
 
-  <script src="https://static.hdslb.com/js/jquery.min.js"></script>
-  <script src="./script.js"></script>
+    <script src="https://static.hdslb.com/js/jquery.min.js"></script>
+    <script src="./script.js"></script>
+    <script src="./denglong.js?text=元旦快乐"> </script>
 </body>
 
 </html>

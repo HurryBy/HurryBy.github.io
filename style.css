@@ -1,8 +1,12 @@
 .msg{
       font-size: calc(3vh + 3.5vw);
-      margin-bottom: 2vh;
       font-weight: bold;
       /*font-family: "youshe";*/
+}
+.msg1{
+  font-size: calc(3vh + 1.8vw);
+  font-weight: bold;
+  /*font-family: "youshe";*/
 }
 .day{
     font-size: calc(4vh + 2vw);
@@ -14,7 +18,7 @@
     font-family: "zhong";
     font-size: calc(3.5vh + 1.8vw);
     display: inline-block;
-    margin: 0 0 20px 0;
+    /* margin: 0 0 20px 0; */
     font-weight: bold;
 }
 
@@ -263,6 +267,9 @@ p {
   
   .msg {
     font-size: calc(2.5vh + 1.2vw);
+  }
+  .msg1 {
+    font-size: calc(2.5vh + 0.6vw);
   }
   
   .day {

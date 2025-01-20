@@ -175,7 +175,8 @@ function getDate() {
 
   let diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
   let diffDays1 = Math.floor(diffTime1 / (1000 * 60 * 60 * 24));
-  time_day1.innerText = tow(diffDays1);
+  if(time_day1 != null){  time_day1.innerText = tow(diffDays1);
+  }
   let diffHours = Math.floor(
     (diffTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
   );
@@ -501,13 +502,14 @@ async function selectFastestURL(urls) {
 }
 
 // 使用示例
+let currectUrl = window.location.href
+let lastStr = currectUrl.slice(currectUrl.length-1,currectUrl.length)
+if(lastStr == "/"){currectUrl = currectUrl.slice(0,currectUrl.length-1)}
 const urls = [
   "https://ghproxy.reflect.us.kg/https://raw.githubusercontent.com/HurryBy/HurryBy.github.io/refs/heads/main",
   "https://gh.sixyin.com/https://raw.githubusercontent.com/HurryBy/HurryBy.github.io/refs/heads/main",
   "https://ghproxy.cc/https://raw.githubusercontent.com/HurryBy/HurryBy.github.io/refs/heads/main",
-  "https://github.moeyy.xyz/https://raw.githubusercontent.com/HurryBy/HurryBy.github.io/refs/heads/main",
   "https://github.muou666.com/https://raw.githubusercontent.com/HurryBy/HurryBy.github.io/refs/heads/main",
-  "https://github.yeqingg.cn/https://raw.githubusercontent.com/HurryBy/HurryBy.github.io/refs/heads/main", //高速线路
   "https://gh.222322.xyz/https://raw.githubusercontent.com/HurryBy/HurryBy.github.io/refs/heads/main",
   "https://gh.pylas.xyz/https://raw.githubusercontent.com/HurryBy/HurryBy.github.io/refs/heads/main",
   "https://gh.catmak.name/https://raw.githubusercontent.com/HurryBy/HurryBy.github.io/refs/heads/main",
@@ -515,6 +517,8 @@ const urls = [
   "https://ghp.miaostay.com/https://raw.githubusercontent.com/HurryBy/HurryBy.github.io/refs/heads/main",
   "https://gh-proxy.ygxz.in/https://raw.githubusercontent.com/HurryBy/HurryBy.github.io/refs/heads/main",
   "https://ghpr.cc/https://raw.githubusercontent.com/HurryBy/HurryBy.github.io/refs/heads/main",
+  "https://raw.githubusercontent.com/HurryBy/HurryBy.github.io/refs/heads/main",
+  currectUrl
   // 添加更多的URL...
 ];
 
